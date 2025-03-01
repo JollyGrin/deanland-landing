@@ -32,10 +32,13 @@
 </div>
 
 <main class="relative min-h-screen w-full">
-	<div class="absolute top-0 flex w-full justify-end p-4">
+	<div class="absolute top-0 flex w-full items-center justify-between p-4">
+		<p class="font-ovo text-xs text-white opacity-40">
+			<i class="opacity-70">est:</i> november 24, 2020
+		</p>
 		<select
 			tabindex="0"
-			class="font-jersey sm:text-md mx-2 rounded bg-white/20 px-2 text-xl"
+			class="font-jersey sm:text-md mx-2 rounded bg-white/20 px-4 py-1 text-xl"
 			bind:value={shader}
 			onchangecapture={(e: any) => {
 				if (!e?.target?.value) return;
@@ -58,9 +61,7 @@
 			>
 				dean.land
 			</h1>
-			<p class="font-ovo text-lg">
-				<i class="opacity-30">est:</i> november 24, 2020
-			</p>
+
 			<div class="flex gap-2">
 				<a
 					href="https://www.instagram.com/deandotland/"
