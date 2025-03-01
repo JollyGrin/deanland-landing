@@ -2,6 +2,16 @@
 	import { Canvas } from '@threlte/core';
 	import Scene from './Scene.svelte';
 	import { fade } from 'svelte/transition';
+	import { rainbowConfig, setShader, warpGridConfig, glitchConfig } from '$lib/shaders';
+	import { onMount } from 'svelte';
+
+	const shaderOptions = {
+		'Warp Grid': warpGridConfig,
+		Rainbow: rainbowConfig,
+		Glitch: glitchConfig
+	};
+	type ShaderKey = keyof typeof shaderOptions;
+	let shader = $state('Warp Grid');
 
 	// Example projects data - replace with your actual data
 	const projects = [
@@ -12,11 +22,15 @@
 			src: 'https://jollygrin.github.io/threejs-decal/decal.webm'
 		}
 		// { title: 'Project 2', type: 'image', src: '/path/to/image1.jpg' },
-		// { title: 'Project 3', type: 'video', src: '/path/to/video2.mp4' },
-		// { title: 'Project 4', type: 'image', src: '/path/to/image2.jpg' },
-		// { title: 'Project 5', type: 'video', src: '/path/to/video3.mp4' },
-		// { title: 'Project 6', type: 'image', src: '/path/to/image3.jpg' }
 	];
+
+	onMount(() => {
+		const cacheShaderKey = localStorage.getItem('shader-key');
+		if (cacheShaderKey) {
+			shader = cacheShaderKey;
+			setShader(shaderOptions[cacheShaderKey as ShaderKey]);
+		}
+	});
 </script>
 
 <div class="font-jersey fixed inset-0 -z-10">
@@ -27,12 +41,28 @@
 
 <main class="relative min-h-screen w-full">
 	<div class="absolute top-0 flex w-full justify-end p-4">
-		<div class="">dsahjk</div>
+		<select
+			tabindex="0"
+			class="font-jersey sm:text-md mx-2 rounded bg-white/20 px-2 text-xl"
+			bind:value={shader}
+			onchangecapture={(e: any) => {
+				if (!e?.target?.value) return;
+				const key = e.target.value as ShaderKey;
+				localStorage.setItem('shader-key', key);
+				setShader(shaderOptions[key]);
+			}}
+		>
+			{#each Object.entries(shaderOptions) as [label, option]}
+				<option class="text-4xl">
+					{label}
+				</option>
+			{/each}
+		</select>
 	</div>
 	<header class="z-50 grid h-screen w-full place-items-center transition-all duration-500">
 		<div class="flex flex-col items-center text-white transition-all duration-500">
 			<h1
-				class="text-shadow font-jersey text-8xl font-bold tracking-wide drop-shadow-md transition-all duration-500"
+				class="text-shadow font-jersey text-7xl font-bold tracking-wide drop-shadow-md transition-all duration-500 md:text-8xl"
 			>
 				dean.land
 			</h1>
@@ -64,7 +94,7 @@
 							<img class="h-full w-full object-cover" src={project.src} alt={project.title} />
 						{/if}
 						<div
-							class="absolute inset-0 flex items-end bg-gradient-to-t from-black/50 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+							class="absolute inset-0 flex items-end bg-gradient-to-t from-black/50 to-transparent p-4 opacity-100 transition-opacity duration-300 group-hover:opacity-100 md:opacity-0"
 						>
 							<h3 class="text-lg font-semibold text-white">
 								{project.title}

@@ -3,11 +3,21 @@
 	import { OrbitControls } from '@threlte/extras';
 	import { ShaderMaterial, Vector2, DoubleSide } from 'three';
 	import { browser } from '$app/environment';
-	import { warpGridConfig } from '$lib/shaders/warpGrid';
+	import { warpGridConfig, rainbowConfig, shaderStore } from '$lib/shaders';
 
-	const shaderMaterial = new ShaderMaterial({
-		...warpGridConfig,
-		side: DoubleSide
+	let shaderMaterial: ShaderMaterial = $state(
+		new ShaderMaterial({
+			...warpGridConfig,
+			side: DoubleSide
+		})
+	);
+
+	$effect(() => {
+		if (!$shaderStore) return;
+		shaderMaterial = new ShaderMaterial({
+			...$shaderStore,
+			side: DoubleSide
+		});
 	});
 
 	const { renderer, size } = useThrelte();
@@ -35,7 +45,7 @@
 			mouseHandler = (e: MouseEvent) => {
 				// Use viewport coordinates instead of element-relative coordinates
 				const x = e.clientX / window.innerWidth;
-				const y = 1 - (e.clientY / window.innerHeight); // Flip Y coordinate
+				const y = 1 - e.clientY / window.innerHeight; // Flip Y coordinate
 				shaderMaterial.uniforms.u_mouse.value.set(x, y);
 			};
 		}
@@ -55,6 +65,8 @@
 			planeHeight = visibleHeight;
 		}
 	});
+
+	$inspect($shaderStore);
 </script>
 
 <svelte:window on:mousemove={mouseHandler} />
