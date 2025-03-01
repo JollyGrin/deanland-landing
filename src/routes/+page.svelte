@@ -8,6 +8,7 @@
 		{
 			title: 'threejs decals',
 			type: 'video',
+			url: 'https://jollygrin.github.io/threejs-decal',
 			src: 'https://jollygrin.github.io/threejs-decal/decal.webm'
 		}
 		// { title: 'Project 2', type: 'image', src: '/path/to/image1.jpg' },
@@ -45,34 +46,32 @@
 	<section class="relative z-10 mx-auto max-w-7xl px-4 py-16" transition:fade={{ duration: 300 }}>
 		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 			{#each projects as project}
-				<div
-					class="group relative aspect-video overflow-hidden rounded-xl bg-black/20 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]"
-				>
-					{#if project.type === 'video'}
-						<video
-							class="h-full w-full object-cover"
-							src={project.src}
-							muted
-							loop
-							playsinline
-							onmouseover={(e: any) => {
-								console.log('hit');
-								console.log(e);
-								e?.target?.play();
-							}}
-							onmouseleave={(e: any) => e?.target?.pause()}
-						></video>
-					{:else}
-						<img class="h-full w-full object-cover" src={project.src} alt={project.title} />
-					{/if}
+				<a href={project.url} target="_blank">
 					<div
-						class="absolute inset-0 flex items-end bg-gradient-to-t from-black/50 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+						class="group relative aspect-video overflow-hidden rounded-xl bg-black/20 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]"
 					>
-						<h3 class="text-lg font-semibold text-white">
-							{project.title}
-						</h3>
+						{#if project.type === 'video'}
+							<video
+								class="h-full w-full object-cover"
+								src={project.src}
+								muted
+								loop
+								playsinline
+								autoplay
+								preload="auto"
+							></video>
+						{:else}
+							<img class="h-full w-full object-cover" src={project.src} alt={project.title} />
+						{/if}
+						<div
+							class="absolute inset-0 flex items-end bg-gradient-to-t from-black/50 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+						>
+							<h3 class="text-lg font-semibold text-white">
+								{project.title}
+							</h3>
+						</div>
 					</div>
-				</div>
+				</a>
 			{/each}
 		</div>
 	</section>
