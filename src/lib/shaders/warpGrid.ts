@@ -28,14 +28,17 @@ const fragmentShader = `
 
 	void main() {
 		vec2 uv = v_uv;
-		vec2 aspect = vec2(u_resolution.x/u_resolution.y, 1.0);
-		uv = (uv - 0.5) * aspect + 0.5;
 		
-		vec2 mouseInfluence = u_mouse - uv;
+		// Improved aspect ratio handling
+		float aspect = u_resolution.x / u_resolution.y;
+		vec2 adjustedUV = uv;
+		adjustedUV.x = ((uv.x - 0.5) * aspect) + 0.5;
+		
+		vec2 mouseInfluence = u_mouse - adjustedUV;
 		float mouseDist = length(mouseInfluence);
 		float distortionAmount = smoothstep(0.3, 0.0, mouseDist) * 0.2;
 		
-		vec2 distortedUV = uv + normalize(mouseInfluence) * distortionAmount;
+		vec2 distortedUV = adjustedUV + normalize(mouseInfluence) * distortionAmount;
 		
 		float grid = isoGrid(distortedUV + u_time * 0.1);
 		
@@ -47,7 +50,6 @@ const fragmentShader = `
 		vec3 finalColor = mix(bgColor, mix(color1, color2, sin(u_time) * 0.5 + 0.5), gridLines);
 		
 		gl_FragColor = vec4(finalColor, 1.0);
-		
 		#include <colorspace_fragment>
 	}`;
 

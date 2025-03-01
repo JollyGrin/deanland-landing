@@ -10,23 +10,16 @@
 		side: DoubleSide
 	});
 
-	// Get canvas size for resolution
-	const { renderer } = useThrelte();
+	const { renderer, size } = useThrelte();
+
+	// Update resolution on size changes
 	$effect(() => {
 		if (browser && renderer) {
-			const size = renderer.getSize(new Vector2());
-			shaderMaterial.uniforms.u_resolution.value.set(size.x, size.y);
-		}
-	});
-
-	$effect(() => {
-		if (browser) {
-			mouseHandler = (e: MouseEvent) => {
-				const rect = (e.target as HTMLElement).getBoundingClientRect();
-				const x = (e.clientX - rect.left) / rect.width;
-				const y = 1 - (e.clientY - rect.top) / rect.height; // Flip Y coordinate
-				shaderMaterial.uniforms.u_mouse.value.set(x, y);
-			};
+			const pixelRatio = window.devicePixelRatio || 1;
+			shaderMaterial.uniforms.u_resolution.value.set(
+				$size.width * pixelRatio,
+				$size.height * pixelRatio
+			);
 		}
 	});
 
@@ -37,13 +30,41 @@
 
 	// Handle mouse movement
 	let mouseHandler: (e: MouseEvent) => void = $state(() => {});
+	$effect(() => {
+		if (browser) {
+			mouseHandler = (e: MouseEvent) => {
+				const rect = (e.target as HTMLElement).getBoundingClientRect();
+				const rectX = (e.target as HTMLElement).getClientRects();
+				console.log({ rect, rectX });
+				const x = (e.clientX - rect.left) / rect.width;
+				const y = 1 - (e.clientY - rect.top) / rect.height;
+				shaderMaterial.uniforms.u_mouse.value.set(x, y);
+			};
+		}
+	});
+
+	// Calculate plane size based on aspect ratio and camera distance
+	const cameraDistance = 2;
+	let planeWidth = $state(2);
+	let planeHeight = $state(2);
+	$effect(() => {
+		if ($size.width && $size.height) {
+			// Calculate the visible height at the camera distance
+			const fov = 75;
+			const vFov = (fov * Math.PI) / 180;
+			const visibleHeight = 2 * Math.tan(vFov / 2) * cameraDistance;
+			planeWidth = visibleHeight * ($size.width / $size.height);
+			planeHeight = visibleHeight;
+		}
+	});
 </script>
 
 <svelte:window on:mousemove={mouseHandler} />
 
 <T.PerspectiveCamera
 	makeDefault
-	position={[0, 0, 2]}
+	position={[0, 0, cameraDistance]}
+	fov={75}
 	oncreate={(ref) => {
 		ref.lookAt(0, 0, 0);
 	}}
@@ -52,6 +73,6 @@
 </T.PerspectiveCamera>
 
 <T.Mesh>
-	<T.PlaneGeometry args={[2, 2]} />
+	<T.PlaneGeometry args={[planeWidth, planeHeight]} />
 	<T is={shaderMaterial} />
 </T.Mesh>
