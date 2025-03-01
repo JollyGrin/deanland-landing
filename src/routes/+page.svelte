@@ -4,6 +4,9 @@
 	import { fade } from 'svelte/transition';
 	import { rainbowConfig, setShader, warpGridConfig, glitchConfig } from '$lib/shaders';
 	import { onMount } from 'svelte';
+	import IconInsta from '$lib/icons/IconInsta.svelte';
+	import IconTwitter from '$lib/icons/IconTwitter.svelte';
+	import { PROJECTS } from '$lib/constants-projects';
 
 	const shaderOptions = {
 		'Warp Grid': warpGridConfig,
@@ -12,17 +15,6 @@
 	};
 	type ShaderKey = keyof typeof shaderOptions;
 	let shader = $state('Warp Grid');
-
-	// Example projects data - replace with your actual data
-	const projects = [
-		{
-			title: 'threejs decals',
-			type: 'video',
-			url: 'https://jollygrin.github.io/threejs-decal',
-			src: 'https://jollygrin.github.io/threejs-decal/decal.webm'
-		}
-		// { title: 'Project 2', type: 'image', src: '/path/to/image1.jpg' },
-	];
 
 	onMount(() => {
 		const cacheShaderKey = localStorage.getItem('shader-key');
@@ -60,7 +52,7 @@
 		</select>
 	</div>
 	<header class="z-50 grid h-screen w-full place-items-center transition-all duration-500">
-		<div class="flex flex-col items-center text-white transition-all duration-500">
+		<div class="flex flex-col items-center gap-2 text-white transition-all duration-500">
 			<h1
 				class="text-shadow font-jersey text-7xl font-bold tracking-wide drop-shadow-md transition-all duration-500 md:text-8xl"
 			>
@@ -69,13 +61,27 @@
 			<p class="font-ovo text-lg">
 				<i class="opacity-30">est:</i> november 24, 2020
 			</p>
+			<div class="flex gap-2">
+				<a
+					href="https://www.instagram.com/deandotland/"
+					class="w-10 opacity-30 transition-all hover:scale-110 hover:text-orange-200 hover:opacity-100 md:w-8"
+				>
+					<IconInsta />
+				</a>
+
+				<a
+					href="https://x.com/deandotland"
+					class="w-10 opacity-30 transition-all hover:scale-110 hover:text-orange-200 hover:opacity-100 md:w-8"
+				>
+					<IconTwitter />
+				</a>
+			</div>
 		</div>
 	</header>
 
-	<!-- Projects Grid -->
 	<section class="relative z-10 mx-auto max-w-7xl px-4 py-16" transition:fade={{ duration: 300 }}>
 		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-			{#each projects as project}
+			{#each PROJECTS as project}
 				<a href={project.url} target="_blank">
 					<div
 						class="group relative aspect-video overflow-hidden rounded-xl bg-black/20 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]"
@@ -94,7 +100,7 @@
 							<img class="h-full w-full object-cover" src={project.src} alt={project.title} />
 						{/if}
 						<div
-							class="absolute inset-0 flex items-end bg-gradient-to-t from-black/50 to-transparent p-4 opacity-100 transition-opacity duration-300 group-hover:opacity-100 md:opacity-0"
+							class="absolute inset-0 flex items-end bg-gradient-to-t from-black/50 to-transparent p-4 opacity-100 transition-opacity duration-300 group-hover:opacity-100 md:opacity-20"
 						>
 							<h3 class="text-lg font-semibold text-white">
 								{project.title}
