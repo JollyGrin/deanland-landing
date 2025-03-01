@@ -54,7 +54,7 @@
 	<header class="z-50 grid h-screen w-full place-items-center transition-all duration-500">
 		<div class="flex flex-col items-center gap-2 text-white transition-all duration-500">
 			<h1
-				class="text-shadow font-jersey text-7xl font-bold tracking-wide drop-shadow-md transition-all duration-500 md:text-8xl"
+				class="text-shadow font-jersey text-7xl tracking-wide drop-shadow-md transition-all duration-500 md:text-8xl"
 			>
 				dean.land
 			</h1>
