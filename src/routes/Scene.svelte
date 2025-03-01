@@ -28,16 +28,14 @@
 		shaderMaterial.uniforms.u_time.value += delta;
 	});
 
-	// Handle mouse movement
+	// Handle mouse movement using viewport coordinates
 	let mouseHandler: (e: MouseEvent) => void = $state(() => {});
 	$effect(() => {
 		if (browser) {
 			mouseHandler = (e: MouseEvent) => {
-				const rect = (e.target as HTMLElement).getBoundingClientRect();
-				const rectX = (e.target as HTMLElement).getClientRects();
-				console.log({ rect, rectX });
-				const x = (e.clientX - rect.left) / rect.width;
-				const y = 1 - (e.clientY - rect.top) / rect.height;
+				// Use viewport coordinates instead of element-relative coordinates
+				const x = e.clientX / window.innerWidth;
+				const y = 1 - (e.clientY / window.innerHeight); // Flip Y coordinate
 				shaderMaterial.uniforms.u_mouse.value.set(x, y);
 			};
 		}
