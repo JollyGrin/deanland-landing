@@ -24,6 +24,12 @@ export const PROJECTS = [
 		src: 'https://jollygrin.github.io/three-fallingcoins/demo.mp4'
 	},
 	{
+		title: 'threejs city 3d',
+		type: 'video',
+		url: 'https://jollygrin.github.io/threejs-map-tile/',
+		src: 'https://jollygrin.github.io/threejs-map-tile/demo.mp4'
+	},
+	{
 		title: 'threejs pyramid ships',
 		type: 'video',
 		url: 'https://jollygrin.github.io/threlte-spaceships/',
