@@ -30,6 +30,12 @@ export const PROJECTS = [
 		src: 'https://jollygrin.github.io/threejs-map-tile/demo.mp4'
 	},
 	{
+		title: 'threejs and maplibre',
+		type: 'video',
+		url: 'https://jollygrin.github.io/svelte-maplibre/',
+		src: 'https://jollygrin.github.io/svelte-maplibre/demo.mp4'
+	},
+	{
 		title: 'threejs pyramid ships',
 		type: 'video',
 		url: 'https://jollygrin.github.io/threlte-spaceships/',
