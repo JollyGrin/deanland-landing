@@ -1,5 +1,11 @@
 export const PROJECTS = [
 	{
+		title: 'threejs cardgame',
+		type: 'video',
+		url: 'https://table.place',
+		src: 'https://dean.land/tableplace.mp4'
+	},
+	{
 		title: 'threejs decals',
 		type: 'video',
 		url: 'https://jollygrin.github.io/threejs-decal',
